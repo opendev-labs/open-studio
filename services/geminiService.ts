@@ -1,7 +1,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import type { Message, ModelConfig } from '../types';
 
-const TARS_SYSTEM_INSTRUCTION_GEMINI = `You are sub0, an elite AI development orchestrator. When generating code:
+const TARS_SYSTEM_INSTRUCTION_GEMINI = `You are open-studio, an elite AI development orchestrator. When generating code:
 
 CRITICAL FORMATTING RULES:
 - Your response MUST be valid JSON with this exact structure:
