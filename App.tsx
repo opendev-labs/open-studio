@@ -250,7 +250,7 @@ function App() {
       const newSession: ChatSession = {
         id: newId,
         title: prompt.length > 25 ? prompt.substring(0, 22) + '...' : prompt,
-        messages: [userMessage, sub0Placeholder],
+        messages: [userMessage, openStudioPlaceholder],
         fileTree: [],
         activeFile: null,
         lastUpdated: Date.now(),
@@ -268,7 +268,7 @@ function App() {
       }
       setSessions(prevSessions => prevSessions.map(s => {
         if (s.id === currentSessionId) {
-          return { ...s, messages: [...s.messages, userMessage, sub0Placeholder], lastUpdated: Date.now() };
+          return { ...s, messages: [...s.messages, userMessage, openStudioPlaceholder], lastUpdated: Date.now() };
         }
         return s;
       }));
@@ -333,7 +333,7 @@ function App() {
           } catch (e) {
             console.error("Failed to parse final JSON from response", e);
             finalConversationalPart = "I tried to generate a response, but it wasn't in the correct format. The raw response is shown below.";
-            setSessions(prev => prev.map(s => s.id === currentSessionId ? { ...s, messages: s.messages.map(m => m.id === sub0MessageId ? { ...m, content: fullResponse } : m) } : s));
+            setSessions(prev => prev.map(s => s.id === currentSessionId ? { ...s, messages: s.messages.map(m => m.id === openStudioMessageId ? { ...m, content: fullResponse } : m) } : s));
           }
         } else {
           console.warn("No valid JSON found in the final response. Treating as pure conversation.");
@@ -401,7 +401,7 @@ function App() {
         setSessions(prev => prev.map(s => {
           if (s.id !== currentSessionId) return s;
           const messages = s.messages.map(msg => {
-            if (msg.id === sub0MessageId && msg.generationInfo) {
+            if (msg.id === openStudioMessageId && msg.generationInfo) {
               const files = msg.generationInfo.files.map(f =>
                 f.path === file.path ? { ...f, status: 'complete' as const } : f
               );
@@ -453,7 +453,7 @@ function App() {
       console.error("Error streaming chat response:", error);
       setSessions(prevSessions => prevSessions.map(s => {
         if (s.id === currentSessionId) {
-          const messages = s.messages.map(m => m.id === sub0MessageId ? { ...m, content: `Sorry, I encountered an error: ${error instanceof Error ? error.message : 'Unknown error'}` } : m);
+          const messages = s.messages.map(m => m.id === openStudioMessageId ? { ...m, content: `Sorry, I encountered an error: ${error instanceof Error ? error.message : 'Unknown error'}` } : m);
           return { ...s, messages };
         }
         return s;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Cpu } from 'lucide-react';
 import type { Message } from '../types';
 import { UserIcon, Sub0Icon, SpinnerIcon } from './icons/Icons';
 import { GenerationStatusView } from './GenerationStatusView';
